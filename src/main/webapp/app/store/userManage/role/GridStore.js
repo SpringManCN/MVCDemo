@@ -1,0 +1,16 @@
+Ext.define('app.store.userManage.role.GridStore',{
+	extend:'Ext.data.Store',
+	model:'app.model.GridModel',
+	proxy:{
+		type:'ajax',
+		url:'getGrid.jsp',
+		reader:{
+			type:'json',
+			root:'stores'
+		},
+		writer:{
+			type:'json'
+		}
+	},
+	autoLoad:true
+});
