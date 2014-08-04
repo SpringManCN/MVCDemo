@@ -1,65 +1,83 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %> 
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
-<!DOCTYPE>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Extjs MVC</title>
+<style type="text/css">  
+body,html{height:100%;margin:0px;padding:0px;}  
+#outer{height:100%;overflow:hidden;position:relative;width:100%;}  
+#outer[id] {display:table;position:static;}  
+#middle {position:absolute;top:50%;left:50%;}  
+#middle[id]{display:table-cell;vertical-align:middle;position:static;}  
+#inner{position:relative;top:-50%;width:310px;left:50% !important;left:-155px;}  
+#container{width:310px;height:190px;margin-left:auto;margin-right:auto;}  
+</style>  
 
-<title>登录页面</title>
-<spring:url value="resources/css/login_style.css" var="login_style_css" />
-<link rel="stylesheet" href="${login_style_css}">
+<!-- 引入Font Awesome的css文件 -->  
+<link type="text/css" rel="stylesheet" href="resouces/font-awesome-4.1.0/css/font-awesome.css">  
 
-<script type="text/javascript">
-	function check(name) {
-		var nameDiv = document.getElementById("nameError");
-		var name = document.getElementById("Name");
-		var pwd = document.getElementById("password");
-		if (name.value == "" || pwd.value == "") {
-			nameDiv.innerHTML = "用户名或密码不能为空!!";
-			return false;
-		} else {
-			nameDiv.innerHTML = "";
-			return true;
+<script type="text/javascript" src="resouces/ext-4.2/bootstrap.js"></script>
+<script type="text/javascript" src="resouces/ext-4.2/locale/ext-lang-zh_CN.js"></script>
+<link  rel="stylesheet" href="resouces/ext-4.2/resources/css/ext-all-neptune.css"/>
+
+
+<script type="text/javascript">  
+Ext.onReady(function () {
+    //begin
+    var logf = new Ext.FormPanel({
+    	standardSubmit: true,//关键设置，只有设置了才能跳转，而不是把返回的网页当成json字符串解析
+        renderTo: "log",
+        url:"/Demo/login",  
+        title: "用户登录",
+        width: 300,
+        height: 150,
+        frame: true,
+        floating: true,
+        defaultType: "textfield",
+        labelAlign: "right",
+        
+        items: [
+        {
+            fieldLabel: "用户名",
+            name:"userName",
+            id:"userName",
+            allowBlank : false //是否可以为空
+        },
+        {
+			xtype : 'textfield',
+			fieldLabel : '密码',
+			name:'password',
+			id : "password",
+			inputType: 'password',
+			allowBlank : false
 		}
+        ],
+        buttons: [{ text: "登录", handler: function () {
+        	if (!logf.getForm().isValid()) return;  
+            
+        	logf.getForm().submit();  
+        }
+        }, { 
+        	text: "重置" ,
+        	handler: function(){
+        		//var formObj = Ext.getCmp("logf");
+			  	var basic = logf.getForm();
+			  	basic.reset();
+        	}}]
 
-	}
-</script>
 
-</head>
-<body>
-	<section class="container">
-		<div class="login" style="border-radius: 25px">
-			<h1 style="border-radius: 25px">登录主数据管理系统</h1>
-			<form action="/Demo/login/login" method="post"
-				onsubmit="return check(this)">
-				<p>
-					<input type="text" id="Name" name="user.loginname" value=""
-						placeholder="请输入用户名">
-				</p>
-				<p>
-					<input type="password" id="password" name="user.password" value=""
-						placeholder="请输入密码">
-				</p>
+    });
+    //end
+    var vp = new Ext.Viewport();
+    var x = (vp.getSize().width - logf.getSize().width) / 2;
+    var y = (vp.getSize().height - logf.getSize().height) / 2;
+    logf.setPosition(x, y);
 
-				<p class="submit">
-					<input type="submit" name="login" value="登录">
-			</form>
-		</div>
-
-		<div class="login-help">
-			<div id="nameError" style="font-size: 20px;"></div>
-			<div id="pwdError" style="font-size: 20px;"></div>
-			<div id="loginError" style="font-size: 20px;">
-				${loginError }
-			</div>
-		</div>
-		
-	</section>
-</body>
-</html>
+}) 
+</script>  
+</head>  
+<body>  
+	<div id="log"></div>
+</body>  
+</html>  

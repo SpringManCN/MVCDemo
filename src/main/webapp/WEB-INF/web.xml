@@ -6,6 +6,10 @@
   
     <display-name>Demo</display-name>
     
+    <welcome-file-list>
+    	<welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+    
     <!-- 防止出现中文乱码 -->
     <filter>
 		<filter-name>encodingFilter</filter-name>
